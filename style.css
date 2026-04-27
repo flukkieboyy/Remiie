@@ -1,0 +1,175 @@
+:root {
+    --pink: #ff69b4;
+    --pink-dark: #ff1493;
+    --bg: #1a0b1a;
+    --win-bg: #2d1b2d;
+    --text: #ffffff;
+    --text-dim: #b5a4a5;
+    
+    --cur-main: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ff69b4" stroke="white" stroke-width="1.5" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') 12 2, auto;
+    --cur-point: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="white" stroke="%23ff69b4" stroke-width="2" d="M10,2 L10,18 L13,15 L16,22 L19,21 L16,14 L20,14 L10,2 Z"/></svg>') 10 2, pointer;
+}
+
+body.light-mode {
+    --bg: #ffe4e1;
+    --win-bg: #ffffff;
+    --pink-dark: #c71585;
+    --text: #4a4a4a;
+}
+
+* { 
+    margin: 0; padding: 0; box-sizing: border-box; 
+    cursor: var(--cur-main) !important;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+    user-select: none;
+}
+*::-webkit-scrollbar { display: none; }
+
+a, button, .t-icon, .start-item, .close-win, .close-viewer, .gallery-thumb, .viewer-nav, .btn-social-icon { 
+    cursor: var(--cur-point) !important; 
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Kanit', 'Zen Maru Gothic', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.pixel-font { font-family: 'Press Start 2P', cursive; font-size: 0.6rem; }
+.text-pink { color: var(--pink) !important; }
+.text-dim { color: var(--text-dim) !important; }
+.border-pink { border: 2px solid var(--pink) !important; }
+
+/* Desktop & Background Layers */
+.desktop { height: calc(100vh - 50px); position: relative; overflow: hidden; padding-top: 50px; }
+
+/* Vignette (Z-1) */
+.bg-vignette {
+    position: absolute; top:0; left:0; width:100%; height:100%;
+    background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.3));
+    z-index: -1; pointer-events: none;
+}
+
+/* Moving Points Canvas (Z-2) */
+#bg-particles {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -2; pointer-events: none; opacity: 0.6;
+}
+
+.top-info { position: fixed; top: 0; width: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(5px); z-index: 1000; border-bottom: 1px solid rgba(255,105,180,0.2); }
+.btn-mode { background: none; border: 1.5px solid var(--pink); color: var(--pink); border-radius: 6px; width: 32px; height: 32px; font-size: 0.8rem; }
+
+/* Windows */
+.win {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 90%; max-width: 450px; background: var(--win-bg);
+    border: 3px solid var(--pink); border-radius: 12px;
+    z-index: 10; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.win.d-none { display: none; transform: translate(-50%, -40%) scale(0.9); opacity: 0; }
+.win-header { background: var(--pink); color: white; border-radius: 8px 8px 0 0; }
+.win-dots span { width: 12px; height: 12px; border-radius: 50%; background: rgba(0,0,0,0.2); display: block; }
+.win-dots .close-win, .win-dots .close-viewer { background: #ff4d4d !important; }
+.win-body { 
+    max-height: 70vh; 
+    overflow-y: auto; 
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Components */
+.avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--pink); object-fit: cover; }
+.blink-cursor { color: var(--pink); animation: blink 0.8s infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 💥 New Social Icons Row */
+.btn-social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border: 2px solid var(--pink);
+    color: var(--pink);
+    background: transparent;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+}
+
+.btn-social-icon:hover {
+    background: var(--pink);
+    color: white;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    border-color: var(--pink);
+}
+/* จบส่วนที่แก้ */
+
+.gallery-thumb { transition: 0.2s; height: 180px; width: 100%; object-fit: cover; }
+.gallery-thumb:hover { transform: scale(1.03); border-color: var(--text) !important; }
+
+.table-pink { background-color: var(--pink); color: white; }
+
+/* Photo Viewer Special */
+.viewer-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(255, 105, 180, 0.6); border: 2px solid white; color: white;
+    width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.viewer-nav:hover { background: var(--pink-dark); transform: translateY(-50%) scale(1.1); }
+.viewer-nav.left { left: 10px; }
+.viewer-nav.right { right: 10px; }
+
+/* Taskbar */
+.taskbar {
+    position: fixed; bottom: 0; width: 100%; height: 50px;
+    background: var(--win-bg); border-top: 3px solid var(--pink);
+    z-index: 2000;
+}
+.start-btn { 
+    background: var(--pink); border: none; color: white; 
+    padding: 5px 15px; border-radius: 5px; font-family: 'Press Start 2P'; font-size: 0.55rem;
+}
+.start-btn.disabled { opacity: 0.3; pointer-events: none; }
+.task-divider { width: 2px; height: 30px; background: rgba(255,255,255,0.1); }
+.t-icon { font-size: 1.3rem; color: var(--text-dim); padding: 5px; border-bottom: 3px solid transparent; transition: 0.3s; }
+.t-icon.active { color: var(--pink); border-bottom-color: var(--pink); }
+.task-credit { font-size: 0.7rem; color: var(--text-dim); }
+.task-credit a { color: var(--pink); text-decoration: none; font-weight: bold; }
+
+/* Start Menu */
+.start-menu {
+    position: fixed; bottom: 55px; left: 10px; width: 200px;
+    background: var(--win-bg); border: 3px solid var(--pink);
+    border-radius: 10px; box-shadow: 10px 10px 0 rgba(0,0,0,0.2); z-index: 3000;
+}
+.start-header { background: var(--pink); color: white; padding: 8px; font-size: 0.5rem; }
+.start-item { padding: 10px 15px; font-size: 0.85rem; transition: 0.2s; display: flex; gap: 10px; align-items: center; }
+.start-item:hover { background: var(--pink); color: white; }
+
+/* Intro & Effects */
+#intro-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 0.5s;
+}
+
+.heart-pop {
+    position: absolute; color: var(--pink); font-size: 20px; pointer-events: none;
+    animation: pop 0.6s forwards ease-out; z-index: 5000;
+}
+@keyframes pop {
+    0% { transform: scale(1) translateY(0); opacity: 1; }
+    100% { transform: scale(1.5) translateY(-40px); opacity: 0; }
+}
+
+@media (max-width: 500px) {
+    .win { width: 95%; }
+    .gallery-thumb { height: 120px; }
+}
