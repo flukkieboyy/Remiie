@@ -20,7 +20,7 @@
 }
 *::-webkit-scrollbar { display: none; }
 
-a, button, .t-icon, .start-item, .close-win, .close-viewer, .gallery-thumb, .viewer-nav, .btn-social-icon { 
+a, button, .t-icon, .start-item, .close-win, .close-viewer, .gallery-thumb, .viewer-nav, .btn-social-icon, .page-btn { 
     cursor: var(--cur-point) !important; 
 }
 
@@ -62,16 +62,16 @@ body {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 90%; max-width: 450px; background: var(--win-bg);
     border: 3px solid var(--win-border); border-radius: 12px;
-    z-index: 10; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10;
     box-shadow: 0 10px 30px rgba(0, 180, 216, 0.15);
 }
 
-.win.d-none { display: none; transform: translate(-50%, -40%) scale(0.9); opacity: 0; }
+.win.d-none { display: none; opacity: 0; }
 .win-header { background: var(--blue-primary); color: white; border-radius: 8px 8px 0 0; }
 .win-dots span { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.4); display: block; }
 .win-dots .close-win, .win-dots .close-viewer { background: #ff4d4d !important; }
 
-/* บังคับให้หน้าต่างตารางและทุกหน้าต่างเป็นสีขาว อักษรดำ */
+/* หน้าต่างเนื้อหาข้างใน บังคับให้เป็นพื้นขาวเสมอ */
 .win-body { background: #ffffff !important; color: #333333 !important; padding: 15px; max-height: 70vh; overflow-y: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
 
 /* Components */
@@ -96,13 +96,36 @@ body {
 .gallery-thumb { transition: 0.2s; height: 180px; width: 100%; object-fit: cover; border: 2px solid var(--blue-primary); border-radius: 8px;}
 .gallery-thumb:hover { transform: scale(1.03); border-color: var(--blue-dark) !important; }
 
-.table-blue { background-color: var(--blue-primary); color: white; }
-.table-hover tbody tr:hover { background-color: rgba(0, 180, 216, 0.1) !important; }
-.table td, .table th { border-bottom: 1px solid rgba(0, 180, 216, 0.1); background-color: transparent !important; }
+/* สไตล์ตารางงานใหม่ ให้เข้ากับ ธีมฟ้า-ขาว */
+.schedule-item {
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 180, 216, 0.2);
+    transition: 0.2s;
+}
+.schedule-item:hover {
+    background: #f0f8ff;
+    border-color: var(--blue-primary);
+}
+.bg-blue {
+    background-color: var(--blue-primary) !important;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    padding: 6px 8px;
+}
+.hover-underline:hover { text-decoration: underline !important; }
 
-/* บังคับตารางให้เป็นอักษรสีดำ */
-.table { color: #333333 !important; }
-.table thead th { background: #f8f9fa; color: var(--blue-dark); }
+/* Pagination Styles (ระบบเปลี่ยนหน้า) */
+.pagination-container {
+    display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px; width: 100%;
+}
+.page-btn {
+    background: var(--win-bg); border: 2px solid var(--blue-primary); color: var(--blue-primary);
+    padding: 5px 15px; border-radius: 5px; transition: 0.3s; font-family: 'Press Start 2P', cursive; font-size: 0.5rem;
+}
+.page-btn:hover:not(:disabled) { background: var(--blue-primary); color: white; }
+.page-btn:disabled { border-color: var(--text-dim); color: var(--text-dim); opacity: 0.5; pointer-events: none;}
+.page-text { color: var(--text); font-size: 0.6rem; font-family: 'Press Start 2P', cursive; }
 
 .viewer-nav {
     position: absolute; top: 50%; transform: translateY(-50%);

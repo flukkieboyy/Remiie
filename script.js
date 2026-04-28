@@ -65,6 +65,37 @@ document.addEventListener('click', (e) => {
 });
 
 // ==========================================
+// 2. ระบบแบ่งหน้า (Pagination Settings)
+// ==========================================
+const ITEMS_PER_PAGE = 4; // กำหนดจำนวนรายการต่อ 1 หน้า
+let currentGalPage = 1;
+let currentSchedulePage = 1;
+
+function setupPagination(id, parentElement, totalPages, currentPage, onPageChange) {
+    let pageContainer = document.getElementById(id);
+    if (!pageContainer) return;
+
+    if (totalPages <= 1) {
+        pageContainer.innerHTML = '';
+        return;
+    }
+
+    pageContainer.innerHTML = `
+        <button class="page-btn" id="${id}-prev" ${currentPage === 1 ? 'disabled' : ''}>&lt; PREV</button>
+        <span class="page-text">${currentPage} / ${totalPages}</span>
+        <button class="page-btn" id="${id}-next" ${currentPage === totalPages ? 'disabled' : ''}>NEXT &gt;</button>
+    `;
+
+    document.getElementById(`${id}-prev`)?.addEventListener('click', () => {
+        playClick(); onPageChange(currentPage - 1);
+    });
+    document.getElementById(`${id}-next`)?.addEventListener('click', () => {
+        playClick(); onPageChange(currentPage + 1);
+    });
+}
+
+
+// ==========================================
 // 6. 🖼️ IG GALLERY DATA & PAGINATION
 // ==========================================
 const galleryData = [
@@ -152,23 +183,19 @@ const galleryData = [
     }
 ];
 
-let currentGalPage = 1;
-const itemsPerPage = 4;
 let currentSet = [];
 let currentImgIdx = 0;
-
 const winViewer = document.getElementById('win-viewer');
 const viewerImg = document.getElementById('viewer-img');
 const viewerCounter = document.getElementById('viewer-counter');
 
 function renderGallery() {
     const container = document.getElementById('gallery-container');
-    container.innerHTML = '';
-    
-    const totalPages = Math.ceil(galleryData.length / itemsPerPage) || 1;
-    const startIdx = (currentGalPage - 1) * itemsPerPage;
-    const pageItems = galleryData.slice(startIdx, startIdx + itemsPerPage);
+    const totalPages = Math.ceil(galleryData.length / ITEMS_PER_PAGE) || 1;
+    const startIdx = (currentGalPage - 1) * ITEMS_PER_PAGE;
+    const pageItems = galleryData.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
+    container.innerHTML = '';
     pageItems.forEach(item => {
         const coverImg = item.images[0];
         const col = document.createElement('div');
@@ -180,7 +207,6 @@ function renderGallery() {
     document.querySelectorAll('.gallery-thumb').forEach(thumb => {
         thumb.addEventListener('click', () => {
             if (!winViewer.classList.contains('d-none')) return; 
-            
             const setId = thumb.dataset.id;
             const setObj = galleryData.find(s => s.id === setId);
             if(setObj) {
@@ -193,28 +219,11 @@ function renderGallery() {
         });
     });
 
-    document.getElementById('gal-page-info').textContent = `${currentGalPage}/${totalPages}`;
-    
-    const btnPrev = document.getElementById('gal-prev');
-    const btnNext = document.getElementById('gal-next');
-    
-    if (currentGalPage === 1) btnPrev.classList.add('disabled');
-    else btnPrev.classList.remove('disabled');
-
-    if (currentGalPage === totalPages) btnNext.classList.add('disabled');
-    else btnNext.classList.remove('disabled');
+    setupPagination('gallery-pagination-wrapper', container, totalPages, currentGalPage, (newPage) => {
+        currentGalPage = newPage;
+        renderGallery();
+    });
 }
-
-document.getElementById('gal-prev').addEventListener('click', () => {
-    if (!winViewer.classList.contains('d-none')) return; 
-    if (currentGalPage > 1) { currentGalPage--; renderGallery(); playClick(); }
-});
-
-document.getElementById('gal-next').addEventListener('click', () => {
-    if (!winViewer.classList.contains('d-none')) return; 
-    const totalPages = Math.ceil(galleryData.length / itemsPerPage);
-    if (currentGalPage < totalPages) { currentGalPage++; renderGallery(); playClick(); }
-});
 
 function updateViewer() {
     viewerImg.src = currentSet[currentImgIdx];
@@ -225,24 +234,70 @@ function updateViewer() {
 
 document.getElementById('btn-prev').addEventListener('click', () => {
     currentImgIdx = (currentImgIdx - 1 + currentSet.length) % currentSet.length;
-    updateViewer();
-    playClick();
+    updateViewer(); playClick();
 });
 
 document.getElementById('btn-next').addEventListener('click', () => {
     currentImgIdx = (currentImgIdx + 1) % currentSet.length;
-    updateViewer();
-    playClick();
+    updateViewer(); playClick();
 });
 
 document.querySelector('.close-viewer').addEventListener('click', (e) => {
-    e.stopPropagation();
-    winViewer.classList.add('d-none');
-    playClick();
+    e.stopPropagation(); winViewer.classList.add('d-none'); playClick();
 });
 
 // ==========================================
-// 💥 MOVING POINTS BACKGROUND
+// 4. SCHEDULE SYSTEM (ตารางงาน + Google Maps)
+// ==========================================
+const schedules = [
+    { date: "02 MAY", title: "MULTI DIRECTION", location: "Central Chiangmai Airport, Chiangmai", mapUrl: "https://maps.google.com/?q=Central+Chiangmai+Airport", booth: "✅ (รอแจ้งเลขบูธ)", stage: "16:30", isSpecial: false },
+    { date: "10 MAY", title: "KOKORO 11", location: "MCC Hall, The Mall Bangkapi", mapUrl: "https://maps.google.com/?q=MCC+Hall+The+Mall+Bangkapi", booth: "i41-46", stage: "✅ (รอแจ้งเวลา)", isSpecial: false },
+    { date: "06 JUNE", title: "COSPLAY PLUS", location: "Mr.Fox Lifehouse", mapUrl: "https://maps.google.com/?q=Mr.Fox+Lifehouse", note: "❗❗ Order Drinks Only ❗❗", booth: "รอแจ้งอีกครั้ง", stage: "รอแจ้งอีกครั้ง", isSpecial: false },
+    { date: "12 JUNE", title: "🎂 HAPPY BIRTHDAY TO ME", isSpecial: true },
+    { date: "20 JUNE", title: "LILITH COSPLAY", location: "MCC Hall The Mall Bangkapi", mapUrl: "https://maps.google.com/?q=MCC+Hall+The+Mall+Bangkapi", booth: "✅ (รอแจ้งเลขบูธ)", stage: "✅ (รอแจ้งเวลา)", isSpecial: false },
+    { date: "28 JUNE", title: "Verso Event", location: "MCC Hall, The Mall Bangkae", mapUrl: "https://maps.google.com/?q=MCC+Hall+The+Mall+Bangkae", booth: "รอแจ้งอีกครั้ง", stage: "รอแจ้งอีกครั้ง", isSpecial: false }
+];
+
+function renderSchedule() {
+    const container = document.getElementById('schedule-list');
+    const totalPages = Math.ceil(schedules.length / ITEMS_PER_PAGE) || 1;
+    const startIdx = (currentSchedulePage - 1) * ITEMS_PER_PAGE;
+    const pageItems = schedules.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+    container.innerHTML = pageItems.map(item => `
+        <div class="schedule-item mb-3 p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-blue text-white">${item.date}</span>
+                <strong class="text-blue" style="font-size: 0.9rem;">${item.title}</strong>
+            </div>
+            ${!item.isSpecial ? `
+                <div class="small text-dark mt-2">
+                    <div class="mb-2">
+                        <i class="fa-solid fa-location-dot text-danger"></i> 
+                        <a href="${item.mapUrl}" target="_blank" class="text-decoration-none text-blue fw-bold hover-underline">${item.location}</a>
+                    </div>
+                    ${item.note ? `<div class="text-danger fw-bold mb-2" style="font-size: 0.8rem;">${item.note}</div>` : ''}
+                    <div class="row g-1 mt-2" style="font-size: 0.75rem;">
+                        <div class="col-12 col-sm-6"><strong>BOOTH:</strong> <span class="text-secondary">${item.booth}</span></div>
+                        <div class="col-12 col-sm-6"><strong>STAGE:</strong> <span class="text-secondary">${item.stage}</span></div>
+                    </div>
+                </div>
+            ` : `
+                <div class="small text-secondary mt-2 text-center py-2 fw-bold">
+                    <i class="fa-solid fa-cake-candles text-danger mb-1" style="font-size: 1.2rem;"></i><br>Special Day!
+                </div>
+            `}
+        </div>
+    `).join('');
+
+    setupPagination('schedule-pagination-wrapper', container, totalPages, currentSchedulePage, (newPage) => {
+        currentSchedulePage = newPage;
+        renderSchedule();
+    });
+}
+
+// ==========================================
+// 5. 💥 MOVING POINTS BACKGROUND
 // ==========================================
 const canvas = document.getElementById('bg-particles');
 const ctx = canvas.getContext('2d');
@@ -263,55 +318,83 @@ class Particle {
         this.color = getComputedStyle(document.documentElement).getPropertyValue('--blue-primary').trim();
     }
     update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
+        this.x += this.speedX; this.y += this.speedY;
         if (this.x > canvas.width) this.x = 0;
         if (this.y < 0) this.y = canvas.height;
     }
     draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = this.color; ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
     }
 }
 
 function initParticles() {
     particles = [];
     const numberOfParticles = (canvas.width * canvas.height) / 8000;
-    for (let i = 0; i < numberOfParticles; i++) {
-        particles.push(new Particle());
-    }
+    for (let i = 0; i < numberOfParticles; i++) particles.push(new Particle());
 }
 
 function animateParticles() {
     if (!document.getElementById('intro-overlay').classList.contains('d-none')) {
-        requestAnimationFrame(animateParticles);
-        return;
+        requestAnimationFrame(animateParticles); return;
     }
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
+    particles.forEach(p => { p.update(); p.draw(); });
     requestAnimationFrame(animateParticles);
 }
 
-// 7. Window System
+// ==========================================
+// 6. Window System & Draggable (แก้บัคลากหน้าต่าง)
+// ==========================================
+let zIndexCounter = 100;
 const wins = document.querySelectorAll('.win:not(#win-viewer)');
 const tIcons = document.querySelectorAll('.t-icon');
 
-function showWin(id) {
-    if (!winViewer.classList.contains('d-none')) {
-        winViewer.classList.add('d-none');
-    }
+function makeDraggable(win) {
+    const header = win.querySelector('.win-header');
+    let isDragging = false, startX, startY, initialX, initialY;
 
+    header.addEventListener('mousedown', (e) => {
+        if(e.target.classList.contains('close-win')) return;
+        isDragging = true;
+        startX = e.clientX; startY = e.clientY;
+        initialX = win.offsetLeft; initialY = win.offsetTop;
+        
+        win.style.zIndex = ++zIndexCounter; 
+        document.body.style.userSelect = "none"; // ป้องกันคลุมดำข้อความ
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        
+        let newX = initialX + (e.clientX - startX);
+        let newY = initialY + (e.clientY - startY);
+        
+        // ล็อคไม่ให้ลากหลุดจอ
+        newX = Math.max(0, Math.min(newX, window.innerWidth - win.offsetWidth));
+        newY = Math.max(0, Math.min(newY, window.innerHeight - win.offsetHeight - 55));
+
+        win.style.left = `${newX}px`;
+        win.style.top = `${newY}px`;
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = "auto";
+    });
+}
+
+// เริ่มระบบ Draggable ให้ทุกหน้าต่าง
+document.querySelectorAll('.win').forEach(w => makeDraggable(w));
+
+function showWin(id) {
+    if (!winViewer.classList.contains('d-none')) winViewer.classList.add('d-none');
     wins.forEach(w => w.classList.add('d-none'));
     const target = document.getElementById(id);
     if(target) {
         target.classList.remove('d-none');
+        target.style.zIndex = ++zIndexCounter;
         target.querySelector('.win-body').scrollTop = 0;
     }
     tIcons.forEach(i => i.classList.toggle('active', i.dataset.id === id));
@@ -330,7 +413,9 @@ document.querySelectorAll('.close-win').forEach(btn => {
     });
 });
 
-// 8. Time System
+// ==========================================
+// 7. Time System
+// ==========================================
 function updateSystemTime() {
     const d = new Date();
     clock.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
@@ -339,12 +424,15 @@ function updateSystemTime() {
     dateDisplay.textContent = `${day} ${month}`;
 }
 
-// 9. Init
+// ==========================================
+// 8. Init Boot
+// ==========================================
 startBtn.addEventListener('click', (e) => { e.stopPropagation(); startMenu.classList.toggle('d-none'); });
 document.addEventListener('click', () => startMenu.classList.add('d-none'));
 
 window.addEventListener('load', () => {
     renderGallery();
+    renderSchedule();
     resizeCanvas();
     initParticles();
     animateParticles();
@@ -378,10 +466,5 @@ window.addEventListener('load', () => {
     }, { once: true });
 });
 
-window.addEventListener('resize', () => {
-    resizeCanvas();
-    initParticles();
-});
-
-setInterval(updateSystemTime, 1000);
-updateSystemTime();
+window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+setInterval(updateSystemTime, 1000); updateSystemTime();
