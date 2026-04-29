@@ -48,7 +48,7 @@ function runTyping() {
 }
 
 document.addEventListener('click', (e) => {
-    if (startMenu.contains(e.target) || startBtn.contains(e.target) || e.target.closest('a') || e.target.closest('button') || e.target.closest('.start-profile-btn')) return;
+    if (startMenu.contains(e.target) || startBtn.contains(e.target) || e.target.closest('a') || e.target.closest('button')) return;
     const h = document.createElement('div');
     h.className = 'heart-pop'; h.innerHTML = '💙';
     h.style.left = (e.pageX - 10) + 'px'; h.style.top = (e.pageY - 10) + 'px';
@@ -57,12 +57,8 @@ document.addEventListener('click', (e) => {
 });
 
 // ==========================================
-// 2. DATA SYSTEM & PAGINATION
+// 2. DATA SYSTEM (ข้อมูลตารางและแกลลอรี่)
 // ==========================================
-const ITEMS_PER_PAGE = 4;
-let currentGalPage = 1;
-let currentSchedulePage = 1;
-
 let schedules = [
     { date: "02 MAY", title: "MULTI DIRECTION", location: "Central Chiangmai Airport, Chiangmai", mapUrl: "https://maps.google.com/?q=Central+Chiangmai+Airport", booth: "✅ (รอแจ้งเลขบูธ)", stage: "16:30", isSpecial: false },
     { date: "10 MAY", title: "KOKORO 11", location: "MCC Hall, The Mall Bangkapi", mapUrl: "https://maps.google.com/?q=MCC+Hall+The+Mall+Bangkapi", booth: "i41-46", stage: "✅ (รอแจ้งเวลา)", isSpecial: false },
@@ -81,19 +77,16 @@ let galleryData = [
     { id: "set7", images: ["https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/635531335_18359051551207890_7808179015630235137_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=MzgzMzEzMjQ3ODYwOTY0NDA4MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTY4Ni5zZHIuQzMifQ%3D%3D&_nc_ohc=1szevt2dapkQ7kNvwF_sQ8C&_nc_oc=Ado3R527FSAMgbgGI2J9_IBUxdcS87OcXEBZKFzeh_cSo3UwksOUud-xALH1PdUlJBgEblgMbOJqL-it2IeRtQ04&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af1msazoL_yu-1Bw0rOzMklxrH1Hv54OjstF5oj-XuXonQ&oe=69F559D8", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/641754838_18360360598207890_1083698472760922000_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=Mzg0MTcxOTQxMTIwNTAzNjIxNg%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkxMS5zZHIuQzMifQ%3D%3D&_nc_ohc=eGJkTMcNVMgQ7kNvwG2i0PE&_nc_oc=Adon4-jw4QLdjxKKeZ69OzbDS2l8hjS_xKqaPnbqvGOl1Q8mg2U6wd4GH4UEQaDZSiA9ZBCYz-7Zna1q0n5mnFh3&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af2ML6pVJ8ULC3kMsUPJYg5VQx6m2OKMcJUpRcTK_xkxsg&oe=69F55DC5", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/641040961_18360360601207890_8678781541451035095_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=109&ig_cache_key=Mzg0MTcxOTQxMTI0NzAwMjM3Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=k-jnEME1ZREQ7kNvwG3suvf&_nc_oc=Adpa3bijzA1ttClkI33yapZCVDxKpZk43m6zr4X7zwAUz2mHtNe7iy7UmTONeq9NrWSLe9YcJgjPRLY7uliRHYKs&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af3Z7TKBVt-ASPIgHv06t0MI9xfijUnO9gbZXrw4pG885A&oe=69F575A7"] },
     { id: "set8", images: ["https://instagram.futp1-1.fna.fbcdn.net/v/t51.82787-15/625050529_18357919249207890_4090277945274016051_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=101&ig_cache_key=MzgyNTkxOTU5NzgzMzAxNjU2Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTY3Mi5zZHIuQzMifQ%3D%3D&_nc_ohc=eJ3jPieokHgQ7kNvwEtUEl9&_nc_oc=AdoMTj2PK07WlyjUAnG9iglCUeeXCsLr-KvGALISoflQ_JRscuRnxUtRZZq4XbzsWr4nTPNtuibZLP5U4bzTfKS2&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-1.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af2PxE2lrcasG6_PZTkz7tqinLTTcyhEGhTxO5JvsPz5hQ&oe=69F563CC", "https://instagram.futp1-1.fna.fbcdn.net/v/t51.82787-15/625053201_18357919252207890_1176597593241333119_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ig_cache_key=MzgyNTkxOTU5NjgwMTE2NTA0OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTY3Mi5zZHIuQzMifQ%3D%3D&_nc_ohc=Ww93dYBz-4EQ7kNvwFHHHEQ&_nc_oc=AdrLntdOUbeeYMTl4tsBga3CGtNSXbBwH_ZPAmNMJjBN0HTvj1DTpD_CuQtry80kHswY5KAWt7oRZDPmghVVCxRQ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-1.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af3AEIllnZbx3Hb0sV1nOSBeknlR2_fXA03a5OgCHyzM_A&oe=69F58841", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/625879163_18357919255207890_878282742027510484_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=104&ig_cache_key=MzgyNTkxOTYwMDUzNDE0MzM0Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTY3Mi5zZHIuQzMifQ%3D%3D&_nc_ohc=V2rykMbPcYgQ7kNvwHPSLFi&_nc_oc=Ado47UPhYsIGks5_QGTHdoGkKoX6DYplbWFi8ESpHYSyq-AqOtMJICEcIfpTcMtO5zHEs4K-5cHzef-JAds-WwDi&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af2s8PqMQsaS42N1fsliOJL3ZCWpBL1fff9Bar7MOLi2iQ&oe=69F5896B"] },
     { id: "set9", images: ["https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/624649587_18356816008207890_1566822956881773046_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=MzgyMjI3NDk0MTMyNTM5MzE0NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=izQE6fkA6csQ7kNvwE1L6JX&_nc_oc=AdriJQ4qAIxz4FLY5o_Z4uO9gf-3ann_tQ_9IkDQsP-d0nOitPaoSSWBGtuvYaPqfRQDod1synBM1rHg3rDYVboZ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af1Laku9-P3ZBncrqnrVe6MSuWjoIdug0I06luia8aoNaw&oe=69F57965", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/625195703_18356816017207890_8420037430378308882_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=104&ig_cache_key=MzgyMjI3NDk0MjE4MTAzMDIxMg%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=uoKrwx1fg58Q7kNvwFWeu4w&_nc_oc=AdrWQ2MvCHjAL4UPqWnkl1ZNoKS4gdkXt4loDjMoN2oEQURH_t7-XVuYceGPKhBZFdaRvbjFLYALoGuEGJtCPMQZ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af3Yz-Qle7_Z9l6q5xVM918kTimHjCFJ1Cbk2vX71UqS0A&oe=69F575CC", "https://instagram.futp1-1.fna.fbcdn.net/v/t51.82787-15/625044736_18356816026207890_4958255970612462610_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=103&ig_cache_key=MzgyMjI3NDk0MzY0MDY0ODg4NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkxMS5zZHIuQzMifQ%3D%3D&_nc_ohc=Tx__KymGeIQQ7kNvwFc_CVV&_nc_oc=AdrIgVmlu6hcdQpa7_I9zIcYqQU6u2BjX30af195n5Fn8yWsFh-3nkPgqj0N2G-L4a1OAJ3V-czOYNPJFFAXy6Dz&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-1.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af0jLRi3XrbYjbYIjo4E8f_MxF8YEApxhrGtAAVnT4AkNQ&oe=69F56591", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/625042856_18356816035207890_2988607316681389715_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=MzgyMjI3NDk0NTI1MTIxODM4OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=BHhNpHQoqYwQ7kNvwH85Xco&_nc_oc=AdpTlayXhYz4f7wExOqpXR8vkpw5BcfMztbBg740kb-X4QxNwhuxjGJZQHECPhBT_49Xb4s-i3r9y8CDXxTT8XXZ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af2UsENuwqZe0zDL5VEwvsRGwK4xIcoW-WCQSUM0BDCJXg&oe=69F58C26", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/624069828_18356816044207890_7831185438396018966_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzgyMjI3NDk0ODE1MzcyMzUwMA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTkyMC5zZHIuQzMifQ%3D%3D&_nc_ohc=pP74u7KP8eEQ7kNvwHVlgjF&_nc_oc=AdpCFpybR9p_zq98L8BCfTtgv7rT-zrbyVg4hmnlCeh5ixJOA1deh6gCfFX2Q7eErjjAbIFN56M4YtMGS_xlMqiX&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af28kyC-uv4qjHcTKh3nSG1eOJVNDC-qo1e_Q9MHKDKEow&oe=69F57333"] },
-    { id: "set10", images: ["https://instagram.futp1-1.fna.fbcdn.net/v/t51.82787-15/609967767_18353084848207890_1755866331073324346_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ig_cache_key=MzgwMTMwMjI0NDUxMjcxOTE3Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=N_lY3IEiWS4Q7kNvwEqjbkl&_nc_oc=Adp0AH6V_3kTZmeExTsLU-ua0h0HlHhGSbHtiNrFBV6s0SQy-7lEqpJfXDGOoWF25BaL9GI4-FV4Jv61hjOqpGcZ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-1.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af2BTbjdcI-_G_edejPNbXgdw9K49BiCW7MVs6ov2yalSA&oe=69F5621E", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/610588853_18353084863207890_7451636144275205164_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=MzgwMTMwMjI0NDUyMTEyOTQ0Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=xKSyyI6IX0oQ7kNvwGGIJPK&_nc_oc=AdqMaB-T8AtfuqyTf6nKYXZgVhqrVfY_A2iZWGmwlrJhoFAspy-j_GYMqTMdTCMS5ws59AoYicXt4unggwgEV4GC&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af2-KrIrHzDbPOfGj7UZCnu6I8sWkzKe4UTmuifTz_Co4Q&oe=69F56914", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/610597421_18353084866207890_5799733595334124664_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=MzgwMTMwMjI0NDQ2MjM5Njg1OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=n4NDEyyqtRMQ7kNvwFaVwLx&_nc_oc=Ado29GfxqERUq9s4zZgIs6wYdv0s110e8VkrtnClgr3TyFrbGi6kfIcpjwEW3h8hK7ucGxN9Drp4z0iHXns1ZvWV&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af32HDshyphh0JDgvKbqkdb0mdc0t9hOa7LwYAuL7cFCtw&oe=69F58146", "https://instagram.futp1-1.fna.fbcdn.net/v/t51.82787-15/610639641_18353084875207890_854758422203814012_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=105&ig_cache_key=MzgwMTMwMjI0NDQwMzY4MDgyNg%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=CTGHwxEg5VIQ7kNvwF-si3t&_nc_oc=AdrH6Bkz5O7ryicoRdF0-5alkcej1mz1h_YDTfTmLreh2piCma7CqeDHwfSvq03t7BVIKUE1D2m9dEKq7eg7NrCd&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-1.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af0Wed-4oHj8VEI-x-Um4nnj36tTrVhm4g9PcF5TmW5BSg&oe=69F58493"] }
+    { id: "set10", images: ["https://instagram.futp1-1.fna.fbcdn.net/v/t51.82787-15/609967767_18353084848207890_1755866331073324346_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ig_cache_key=MzgwMTMwMjI0NDUxMjcxOTE3Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=N_lY3IEiWS4Q7kNvwEqjbkl&_nc_oc=Adp0AH6V_3kTZmeExTsLU-ua0h0HlHhGSbHtiNrFBV6s0SQy-7lEqpJfXDGOoWF25BaL9GI4-FV4Jv61hjOqpGcZ&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-1.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af2BTbjdcI-_G_edejPNbXgdw9K49BiCW7MVs6ov2yalSA&oe=69F5621E", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/610588853_18353084863207890_7451636144275205164_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=MzgwMTMwMjI0NDUyMTEyOTQ0Mw%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzMTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=xKSyyI6IX0oQ7kNvwGGIJPK&_nc_oc=AdqMaB-T8AtfuqyTf6nKYXZgVhqrVfY_A2iZWGmwlrJhoFAspy-j_GYMqTMdTCMS5ws59AoYicXt4unggwgEV4GC&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af2-KrIrHzDbPOfGj7UZCnu6I8sWkzKe4UTmuifTz_Co4Q&oe=69F56914", "https://instagram.futp1-2.fna.fbcdn.net/v/t51.82787-15/610597421_18353084866207890_5799733595334124664_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=110&ig_cache_key=MzgwMTMwMjI0NDQ2MjM5Njg1OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=n4NDEyyqtRMQ7kNvwFaVwLx&_nc_oc=Ado29GfxqERUq9s4zZgIs6wYdv0s110e8VkrtnClgr3TyFrbGi6kfIcpjwEW3h8hK7ucGxN9Drp4z0iHXns1ZvWV&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-2.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af32HDshyphh0JDgvKbqkdb0mdc0t9hOa7LwYAuL7cFCtw&oe=69F58146", "https://instagram.futp1-1.fna.fbcdn.net/v/t51.82787-15/610639641_18353084875207890_854758422203814012_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=105&ig_cache_key=MzgwMTMwMjI0NDQwMzY4MDgyNg%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4MTQ0MC5zZHIuQzMifQ%3D%3D&_nc_ohc=CTGHwxEg5VIQ7kNvwF-si3t&_nc_oc=AdrH6Bkz5O7ryicoRdF0-5alkcej1mz1h_YDTfTmLreh2piCma7CqeDHwfSvq03t7BVIKUE1D2m9dEKq7eg7NrCd&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.futp1-1.fna&_nc_gid=ipyPH5KNaRVlOQGW4B2CXQ&_nc_ss=7a22e&oh=00_Af0Wed-4oHj8VEI-x-Um4nnj36tTrVhm4g9PcF5TmW5BSg&oe=69F58493"] }
 ];
 
-let secretAdminToken = "";
+let secretAdminToken = ""; // เก็บรหัสผ่านชั่วคราวตอนเข้าระบบสำเร็จ
 
+// ฟังก์ชันแบ่งหน้า
 function setupPagination(id, parentElement, totalPages, currentPage, onPageChange) {
     let pageContainer = document.getElementById(id);
     if (!pageContainer) return;
-
-    if (totalPages <= 1) {
-        pageContainer.innerHTML = '';
-        return;
-    }
+    if (totalPages <= 1) { pageContainer.innerHTML = ''; return; }
 
     pageContainer.innerHTML = `
         <button class="page-btn" id="${id}-prev" ${currentPage === 1 ? 'disabled' : ''}>< PREV</button>
@@ -105,10 +98,13 @@ function setupPagination(id, parentElement, totalPages, currentPage, onPageChang
     document.getElementById(`${id}-next`)?.addEventListener('click', () => { playClick(); onPageChange(currentPage + 1); });
 }
 
+// ------------------------------------------
+// 🔥 ดึงข้อมูลจากฐานข้อมูล (Vercel) 🔥
+// ------------------------------------------
 async function fetchDataFromDB() {
     try {
         const res = await fetch('/api/data');
-        if(res.ok) {
+        if (res.ok) {
             const dbData = await res.json();
             if (dbData && dbData.schedules) schedules = dbData.schedules;
             if (dbData && dbData.galleryData) galleryData = dbData.galleryData;
@@ -118,20 +114,26 @@ async function fetchDataFromDB() {
     }
     renderSchedule();
     renderGallery();
+    if (typeof renderAdminLists === 'function') renderAdminLists();
 }
 
+// ------------------------------------------
+// 🔥 บันทึกข้อมูลลงฐานข้อมูล (Vercel) 🔥
+// ------------------------------------------
 async function saveToDB() {
     try {
         const res = await fetch('/api/data', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: secretAdminToken, payload: { schedules, galleryData } })
+            body: JSON.stringify({ token: secretAdminToken, action: "save", payload: { schedules, galleryData } })
         });
-        if(!res.ok) {
-            alert("❌ ไม่สามารถบันทึกได้ กรุณาตรวจสอบสิทธิ์และ Vercel Database");
+        if (res.ok) {
+            alert("✅ บันทึกข้อมูลลง Database เรียบร้อย!");
+        } else {
+            alert("❌ ไม่สามารถบันทึกได้! รหัสผ่านอาจไม่ถูกต้อง");
         }
     } catch (e) {
-        alert("❌ ไม่สามารถเชื่อมต่อกับ Database (ข้อมูลแสดงแค่บนหน้าจอ)");
+        alert("❌ ระบบขัดข้อง ไม่สามารถเชื่อมต่อกับ Database ได้");
     }
 }
 
@@ -296,14 +298,17 @@ document.querySelectorAll('.close-win').forEach(btn => {
 });
 
 // ==========================================
-// 7. 🔐 ระบบ LOGIN & ADMIN GUI 
+// 7. 🔐 ระบบ LOGIN & ADMIN GUI
 // ==========================================
-document.getElementById('btn-open-login').addEventListener('click', () => {
+
+// โค้ดส่วนนี้แก้บั๊กที่กดปุ่ม LOGIN ใน Start Menu แล้วหาย!
+document.getElementById('btn-open-login').addEventListener('click', (e) => {
+    e.stopPropagation(); // 👈 ป้องกันการคลิกทะลุไปปิดหน้าต่าง
     startMenu.classList.add('d-none'); 
     showWin('win-admin-login'); 
 });
 
-// ⭐ ตรวจสอบและล็อกอินผ่าน Vercel API เท่านั้น!
+// ⭐ เช็คผ่าน Vercel /api/data เท่านั้น (ไม่มี 1234 แล้ว!)
 document.getElementById('btn-login-submit').addEventListener('click', async () => {
     const pass = document.getElementById('admin-pass').value;
     const btn = document.getElementById('btn-login-submit');
@@ -319,7 +324,7 @@ document.getElementById('btn-login-submit').addEventListener('click', async () =
         });
         
         if (res.ok) {
-            // ถ้ารหัสถูก (เช็คจาก API ฝั่ง Server แล้วว่าตรงกับ ADMIN_PASS)
+            // ถ้ารหัสถูก (เช็คจาก API ฝั่ง Server)
             secretAdminToken = pass;
             document.getElementById('win-admin-login').classList.add('d-none');
             showWin('win-admin-dash'); 
@@ -331,7 +336,7 @@ document.getElementById('btn-login-submit').addEventListener('click', async () =
             alert("❌ ACCESS DENIED\n" + (errData.error || "Password ไม่ถูกต้อง!"));
         }
     } catch (e) {
-        alert("❌ ไม่สามารถเชื่อมต่อระบบหลังบ้าน (API) ได้!\n1. ตรวจสอบว่ามีไฟล์ api/data.js ใน GitHub หรือยัง\n2. ตั้งค่า ADMIN_PASS ใน Vercel แล้ว Redeploy หรือยัง?");
+        alert("❌ ไม่สามารถเชื่อมต่อระบบหลังบ้าน (API) ได้!\n1. ตรวจสอบว่าไฟล์ api/data.js อัปโหลดหรือยัง\n2. ตั้งค่า ADMIN_PASS ใน Vercel แล้ว Redeploy หรือยัง?");
     }
     btn.innerHTML = '<i class="fa-solid fa-unlock"></i> LOGIN'; 
 });
@@ -378,12 +383,12 @@ window.renderAdminLists = function() {
     `).join('');
 }
 
-// ลบข้อมูลและอัปเดตลง Database
+// ลบข้อมูลและบันทึก
 window.deleteSchedule = function(idx) { if(confirm("ลบงานนี้แน่ใจไหม?")) { schedules.splice(idx, 1); renderSchedule(); renderAdminLists(); saveToDB(); } }
 window.deleteGallerySet = function(idx) { if(confirm("ลบเซ็ตนี้ทั้งหมดเลยแน่ใจไหม?")) { galleryData.splice(idx, 1); currentGalPage = 1; renderGallery(); renderAdminLists(); saveToDB(); } }
 window.deleteGalleryImage = function(setIdx, imgIdx) { if(confirm("ลบรูปนี้?")) { galleryData[setIdx].images.splice(imgIdx, 1); renderGallery(); renderAdminLists(); saveToDB(); } }
 
-// เพิ่ม Schedule ลง Database
+// เพิ่ม Schedule
 document.getElementById('btn-submit-sch').addEventListener('click', () => {
     const isSpecial = document.getElementById('add-sch-special').checked;
     const newSch = {
@@ -405,7 +410,7 @@ document.getElementById('btn-submit-sch').addEventListener('click', () => {
     renderSchedule(); renderAdminLists(); saveToDB();
 });
 
-// เพิ่ม Gallery ลง Database
+// เพิ่ม Gallery
 document.getElementById('btn-submit-gal').addEventListener('click', () => {
     const setId = document.getElementById('add-gal-set').value;
     const imgUrl = document.getElementById('add-gal-url').value;
@@ -420,15 +425,15 @@ document.getElementById('btn-submit-gal').addEventListener('click', () => {
     renderGallery(); renderAdminLists(); saveToDB();
 });
 
+
 // ==========================================
-// 8. Init Boot (แก้บั๊กค้าง)
+// 8. Init Boot (หน้าจอบูทคลิกแล้วมาแน่นอน)
 // ==========================================
 window.addEventListener('load', () => {
     const intro = document.getElementById('intro-overlay');
     const introText = intro.querySelector('p');
     const spinner = intro.querySelector('.spinner-border');
 
-    // โชว์หน้า Click ทันที โดยไม่ต้องรอฟังก์ชันอื่น
     if (spinner && introText && intro) {
         spinner.classList.add('d-none');
         introText.innerHTML = '> CLICK TO BOOT SYSTEM <';
@@ -464,6 +469,7 @@ window.addEventListener('load', () => {
         console.error(e);
     }
 });
+
 setInterval(() => {
     const d = new Date();
     clock.textContent = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
