@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;500&family=Press+Start+2P&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="short icon" href="https://png.pngtree.com/png-vector/20251231/ourmid/pngtree-glowering-pixelated-aqua-heart-icon-png-image_18359746.webp" />
 </head>
 <body>
     <div id="intro-overlay">
@@ -21,7 +22,7 @@
         <div class="bg-vignette"></div>
         <canvas id="bg-particles"></canvas>
         <div class="top-info d-flex justify-content-between align-items-center px-3 py-2">
-            <div class="sys-label pixel-font">REMIE OS_STABLE</div>
+            <div class="sys-label pixel-font">REMIE OS</div>
             <div class="d-flex align-items-center gap-3">
                 <div id="date" class="pixel-font" style="font-size: 0.5rem; opacity: 0.8;">-- ---</div>
                 <div id="clock" class="pixel-font">00:00</div>
@@ -42,10 +43,10 @@
                     <span id="title-sub"></span><span class="blink-cursor">_</span>
                 </div>
                 <div class="d-flex justify-content-center gap-3 mt-3">
-                    <a href="https://www.instagram.com/remieeimer/" target="_blank" class="btn-social-icon"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://x.com/reminermy" target="_blank" class="btn-social-icon"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.tiktok.com/@jellyrmie" target="_blank" class="btn-social-icon"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="https://www.facebook.com/reminermy/" target="_blank" class="btn-social-icon"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/remieeimer/" target="_blank" class="btn-social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://x.com/reminermy" target="_blank" class="btn-social-icon" title="Twitter (X)"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.tiktok.com/@jellyrmie" target="_blank" class="btn-social-icon" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/reminermy/" target="_blank" class="btn-social-icon" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
                 </div>
             </div>
         </div>
@@ -69,7 +70,7 @@
                 <div class="pixel-font text-white" style="font-size: 0.5rem;" id="viewer-counter">1/1</div>
             </div>
             <div class="win-body p-2 position-relative d-flex justify-content-center align-items-center" style="background: rgba(0,0,0,0.8) !important; min-height: 300px;">
-                <img id="viewer-img" src="" class="img-fluid rounded" style="max-height: 60vh; object-fit: contain;">
+                <img id="viewer-img" src="" class="img-fluid rounded" style="max-height: 60vh; object-fit: contain; box-shadow: 0 0 15px rgba(0, 180, 216, 0.4);">
                 <button id="btn-prev" class="viewer-nav left"><i class="fa-solid fa-chevron-left"></i></button>
                 <button id="btn-next" class="viewer-nav right"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
@@ -83,7 +84,7 @@
             <div class="win-body p-2 d-flex flex-column" style="min-height: 480px;">
                 <div id="schedule-list" class="flex-grow-1"></div>
                 <div id="schedule-pagination-wrapper"></div>
-                <div class="p-2 text-center small text-dim mt-2" style="font-size: 0.75rem;">* อัพเดตตารางงานตามที่พี่เรมี่บอก</div>
+                <div class="p-2 text-center small text-dim mt-2" style="font-size: 0.75rem;">*อัพเดตตารางงานจากห้อง "ฟาร์มม๋าของมุ้มี่🐶"</div>
             </div>
         </div>
 
@@ -95,99 +96,11 @@
             <div class="win-body p-4 text-center">
                 <i class="fa-solid fa-cloud text-blue fs-1 mb-3"></i>
                 <h2 class="pixel-font fs-6 text-blue mb-3">Remie OS</h2>
+                <p class="small mb-3">Fan website made by <a href="https://flukkieboyy.vercel.app/" target="_blank" class="text-blue text-decoration-none fw-bold">@flukkieboyy</a></p>
+                <hr class="border-blue opacity-25">
                 <p class="small text-dim">Status: Everything fine.</p>
             </div>
         </div>
-
-        <div class="win shadow-lg d-none" id="win-admin-login" style="max-width: 320px; z-index: 3000;">
-            <div class="win-header d-flex align-items-center px-2 py-1" style="background-color: var(--blue-dark);">
-                <div class="win-dots d-flex gap-1 me-3"><span class="close-win" style="background:#ff4d4d;"></span><span></span><span></span></div>
-                <div class="win-title pixel-font flex-grow-1">LOGIN.EXE</div>
-            </div>
-            <div class="win-body p-4 text-center">
-                <img src="https://file.garden/aech34tN8glaOMqR/Remiie/pfp/New%20Project%20(1).png" alt="Remie" class="avatar mb-2" style="width: 80px; height: 80px; box-shadow: 0 4px 10px rgba(0, 180, 216, 0.3);">
-                <h5 class="pixel-font text-blue mb-4" style="font-size: 0.7rem; letter-spacing: 1px;">WELCOME BACK!</h5>
-                
-                <div class="input-group mb-3">
-                    <span class="input-group-text bg-light text-blue"><i class="fa-solid fa-user"></i></span>
-                    <input type="text" id="admin-user" class="form-control" value="remieeimer" readonly style="background-color: #f0f8ff; font-weight: bold; color: var(--blue-dark); cursor: not-allowed;">
-                </div>
-                
-                <div class="input-group mb-4">
-                    <span class="input-group-text bg-light text-blue"><i class="fa-solid fa-key"></i></span>
-                    <input type="password" id="admin-pass" class="form-control" placeholder="Enter Password...">
-                </div>
-                
-                <button id="btn-login-submit" class="start-btn w-100" style="padding: 10px; font-size: 0.7rem;"><i class="fa-solid fa-unlock"></i> LOGIN</button>
-            </div>
-        </div>
-
-        <div class="win shadow-lg d-none" id="win-admin-dash" style="max-width: 600px; width: 95%; z-index: 3000;">
-            <div class="win-header d-flex align-items-center px-2 py-1" style="background-color: #d90429;">
-                <div class="win-dots d-flex gap-1 me-3"><span class="close-win" style="background:#ff4d4d;"></span><span></span><span></span></div>
-                <div class="win-title pixel-font flex-grow-1">DATA_MANAGER.EXE</div>
-            </div>
-            <div class="win-body p-0" style="background: #f8f9fa !important; height: 75vh; display: flex; flex-direction: column;">
-                <div class="d-flex bg-white border-bottom shadow-sm">
-                    <button class="admin-tab active flex-grow-1 py-3" data-target="admin-sch"><i class="fa-solid fa-calendar-days text-danger"></i> SCHEDULES</button>
-                    <button class="admin-tab flex-grow-1 py-3" data-target="admin-gal"><i class="fa-solid fa-image text-danger"></i> GALLERY</button>
-                </div>
-                <div class="p-3 flex-grow-1" style="overflow-y: auto;">
-                    
-                    <div id="admin-sch" class="admin-panel">
-                        <div class="card mb-4 border-0 shadow-sm">
-                            <div class="card-body">
-                                <h6 class="pixel-font text-danger mb-3" style="font-size:0.55rem;">+ ADD NEW SCHEDULE</h6>
-                                <div class="row g-2 small">
-                                    <div class="col-6"><input type="text" id="add-sch-date" class="form-control form-control-sm" placeholder="Date (e.g. 02 MAY)"></div>
-                                    <div class="col-6"><input type="text" id="add-sch-title" class="form-control form-control-sm" placeholder="Event Title"></div>
-                                    <div class="col-12"><input type="text" id="add-sch-loc" class="form-control form-control-sm" placeholder="Location Name"></div>
-                                    <div class="col-12"><input type="text" id="add-sch-map" class="form-control form-control-sm" placeholder="Google Maps URL"></div>
-                                    <div class="col-6"><input type="text" id="add-sch-booth" class="form-control form-control-sm" placeholder="Booth (e.g. i41-46)"></div>
-                                    <div class="col-6"><input type="text" id="add-sch-stage" class="form-control form-control-sm" placeholder="Stage Time (e.g. 16:30)"></div>
-                                    <div class="col-12"><input type="text" id="add-sch-note" class="form-control form-control-sm" placeholder="Special Note (Optional)"></div>
-                                    <div class="col-12 mt-2">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="add-sch-special">
-                                            <label class="form-check-label text-dim" for="add-sch-special">Special Event (ซ่อนสถานที่/บูธ เช่น วันเกิด)</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <button id="btn-submit-sch" class="start-btn bg-danger w-100">ADD SCHEDULE</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h6 class="pixel-font text-dark mb-2" style="font-size:0.5rem;">CURRENT SCHEDULES</h6>
-                        <div id="admin-sch-list"></div>
-                    </div>
-
-                    <div id="admin-gal" class="admin-panel d-none">
-                        <div class="card mb-4 border-0 shadow-sm">
-                            <div class="card-body">
-                                <h6 class="pixel-font text-danger mb-3" style="font-size:0.55rem;">+ ADD GALLERY IMAGE</h6>
-                                <div class="row g-2 small">
-                                    <div class="col-12">
-                                        <input type="text" id="add-gal-set" class="form-control form-control-sm" placeholder="Set ID (เช่น set_latest)">
-                                        <small class="text-dim">ใส่ชื่อ Set เดิม รูปจะไปต่อท้าย / ชื่อใหม่ สร้าง Set ใหม่</small>
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <input type="text" id="add-gal-url" class="form-control form-control-sm" placeholder="Image URL (ลิ้งค์รูปภาพ)">
-                                    </div>
-                                    <div class="col-12 mt-2">
-                                        <button id="btn-submit-gal" class="start-btn bg-danger w-100">ADD IMAGE</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h6 class="pixel-font text-dark mb-2" style="font-size:0.5rem;">CURRENT GALLERY SETS</h6>
-                        <div id="admin-gal-list"></div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div class="taskbar d-flex align-items-center px-2">
@@ -201,18 +114,12 @@
             <div class="t-icon" data-id="win-schedule" title="Schedule"><i class="fa-solid fa-calendar-days"></i></div>
         </div>
         <div class="task-credit d-none d-md-block pe-2">
-            Made with 💙 by FLUKKIEBOYY
+            Made with 💙 by <a href="https://flukkieboyy.vercel.app/" target="_blank">FLUKKIEBOYY</a>
         </div>
     </div>
 
     <div id="start-menu" class="start-menu d-none">
         <div class="start-header pixel-font">REMIE OS MENU</div>
-        
-        <div class="start-item" onclick="openAdminLogin(event)" style="color: var(--blue-dark); font-weight: bold; cursor: pointer;">
-            <i class="fa-solid fa-lock"></i> LOGIN
-        </div>
-        
-        <hr class="m-0 opacity-25 border-blue">
         <div class="start-item" onclick="location.reload()"><i class="fa-solid fa-rotate"></i> RESTART</div>
         <div class="start-item" data-id="win-sysinfo"><i class="fa-solid fa-circle-info"></i> SYSTEM INFO</div>
     </div>
