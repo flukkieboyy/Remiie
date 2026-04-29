@@ -101,7 +101,7 @@
 
         <div class="win shadow-lg d-none" id="win-admin-login" style="max-width: 320px; z-index: 3000;">
             <div class="win-header d-flex align-items-center px-2 py-1" style="background-color: var(--blue-dark);">
-                <div class="win-dots d-flex gap-1 me-3"><span class="close-win"></span><span></span><span></span></div>
+                <div class="win-dots d-flex gap-1 me-3"><span id="close-login" class="close-win" style="background:#ff4d4d;"></span><span></span><span></span></div>
                 <div class="win-title pixel-font flex-grow-1">LOGIN.EXE</div>
             </div>
             <div class="win-body p-4 text-center">
@@ -124,14 +124,66 @@
 
         <div class="win shadow-lg d-none" id="win-admin-dash" style="max-width: 600px; width: 95%; z-index: 3000;">
             <div class="win-header d-flex align-items-center px-2 py-1" style="background-color: #d90429;">
-                <div class="win-dots d-flex gap-1 me-3"><span class="close-win"></span><span></span><span></span></div>
+                <div class="win-dots d-flex gap-1 me-3"><span id="close-admin" class="close-win" style="background:#ff4d4d;"></span><span></span><span></span></div>
                 <div class="win-title pixel-font flex-grow-1">DATA_MANAGER.EXE</div>
             </div>
-            <div class="win-body p-3">
-                <h6 class="pixel-font text-danger mb-3"><i class="fa-solid fa-database"></i> EDIT SCHEDULE (JSON)</h6>
-                <p class="small text-dim">แก้ไขข้อมูลตารางงานในรูปแบบ Code ด้านล่าง แล้วกด Save</p>
-                <textarea id="admin-schedule-editor" class="form-control mb-3" style="height: 300px; font-family: monospace; font-size: 0.8rem; background: #f8f9fa;"></textarea>
-                <button id="btn-save-schedule" class="start-btn w-100 bg-danger text-white">SAVE CHANGES</button>
+            <div class="win-body p-0" style="background: #f8f9fa !important; height: 75vh; display: flex; flex-direction: column;">
+                <div class="d-flex bg-white border-bottom shadow-sm">
+                    <button class="admin-tab active flex-grow-1 py-3" data-target="admin-sch"><i class="fa-solid fa-calendar-days text-danger"></i> SCHEDULES</button>
+                    <button class="admin-tab flex-grow-1 py-3" data-target="admin-gal"><i class="fa-solid fa-image text-danger"></i> GALLERY</button>
+                </div>
+                
+                <div class="p-3 flex-grow-1" style="overflow-y: auto;">
+                    
+                    <div id="admin-sch" class="admin-panel">
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="pixel-font text-danger mb-3" style="font-size:0.55rem;">+ ADD NEW SCHEDULE</h6>
+                                <div class="row g-2 small">
+                                    <div class="col-6"><input type="text" id="add-sch-date" class="form-control form-control-sm" placeholder="Date (e.g. 02 MAY)"></div>
+                                    <div class="col-6"><input type="text" id="add-sch-title" class="form-control form-control-sm" placeholder="Event Title"></div>
+                                    <div class="col-12"><input type="text" id="add-sch-loc" class="form-control form-control-sm" placeholder="Location Name"></div>
+                                    <div class="col-12"><input type="text" id="add-sch-map" class="form-control form-control-sm" placeholder="Google Maps URL"></div>
+                                    <div class="col-6"><input type="text" id="add-sch-booth" class="form-control form-control-sm" placeholder="Booth (e.g. i41-46)"></div>
+                                    <div class="col-6"><input type="text" id="add-sch-stage" class="form-control form-control-sm" placeholder="Stage Time (e.g. 16:30)"></div>
+                                    <div class="col-12"><input type="text" id="add-sch-note" class="form-control form-control-sm" placeholder="Special Note (Optional)"></div>
+                                    <div class="col-12 mt-2">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="add-sch-special">
+                                            <label class="form-check-label text-dim" for="add-sch-special">Special Event (ซ่อนสถานที่/บูธ เช่น วันเกิด)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <button id="btn-submit-sch" class="start-btn bg-danger w-100">ADD SCHEDULE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="pixel-font text-dark mb-2" style="font-size:0.5rem;">CURRENT SCHEDULES</h6>
+                        <div id="admin-sch-list"></div> </div>
+
+                    <div id="admin-gal" class="admin-panel d-none">
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h6 class="pixel-font text-danger mb-3" style="font-size:0.55rem;">+ ADD GALLERY IMAGE</h6>
+                                <div class="row g-2 small">
+                                    <div class="col-12">
+                                        <input type="text" id="add-gal-set" class="form-control form-control-sm" placeholder="Set ID (เช่น set_latest, set2, set_new)">
+                                        <small class="text-dim">ถ้าใส่ชื่อ Set เดิม รูปจะถูกเพิ่มในอัลบั้มนั้น ถ้าใส่ชื่อใหม่ จะเป็นการสร้างอัลบั้มใหม่</small>
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <input type="text" id="add-gal-url" class="form-control form-control-sm" placeholder="Image URL (ลิ้งค์รูปภาพ)">
+                                    </div>
+                                    <div class="col-12 mt-2">
+                                        <button id="btn-submit-gal" class="start-btn bg-danger w-100">ADD IMAGE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h6 class="pixel-font text-dark mb-2" style="font-size:0.5rem;">CURRENT GALLERY SETS</h6>
+                        <div id="admin-gal-list"></div> </div>
+
+                </div>
             </div>
         </div>
 
@@ -155,15 +207,8 @@
     <div id="start-menu" class="start-menu d-none">
         <div class="start-header pixel-font">REMIE OS MENU</div>
         
-        <div class="p-2">
-            <div class="start-profile-btn" id="btn-open-login">
-                <img src="https://file.garden/aech34tN8glaOMqR/Remiie/pfp/New%20Project%20(1).png" alt="User" class="rounded-circle" style="width: 32px; height: 32px; border: 2px solid var(--blue-primary); object-fit: cover;">
-                <div class="flex-grow-1" style="line-height: 1.2;">
-                    <div style="font-size: 0.8rem; font-weight: bold; color: var(--blue-dark);">remieeimer</div>
-                    <div style="font-size: 0.6rem; color: var(--text-dim);">Admin System</div>
-                </div>
-                <i class="fa-solid fa-gear text-dim" style="font-size: 0.9rem;"></i>
-            </div>
+        <div class="start-item" id="btn-open-login" style="color: var(--blue-dark); font-weight: bold;">
+            <i class="fa-solid fa-lock"></i> LOGIN
         </div>
         
         <hr class="m-0 opacity-25 border-blue">
