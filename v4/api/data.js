@@ -1,11 +1,14 @@
+// ไฟล์ api/data.js
 export default async function handler(req, res) {
     const KV_URL = process.env.KV_REST_API_URL;
     const KV_TOKEN = process.env.KV_REST_API_TOKEN;
     const ADMIN_PASS = process.env.ADMIN_PASS;
 
-    if (!KV_URL || !KV_TOKEN) return res.status(500).json({ error: "Database setup missing" });
+    if (!KV_URL || !KV_TOKEN) {
+        return res.status(500).json({ error: "Database setup missing! กรุณาเปิด KV Database ใน Vercel" });
+    }
 
-    // 1. ดึงข้อมูลให้หน้าเว็บ (ทุกคนดูได้)
+    // 1. ส่งข้อมูลให้หน้าเว็บแสดงผล (GET)
     if (req.method === 'GET') {
         try {
             const response = await fetch(`${KV_URL}/get/remie_os_data`, { headers: { Authorization: `Bearer ${KV_TOKEN}` } });
@@ -14,17 +17,17 @@ export default async function handler(req, res) {
         } catch (e) { return res.status(500).json({ error: "Read Error" }); }
     }
 
-    // 2. ล็อกอิน หรือ บันทึกข้อมูล (ต้องมีรหัสผ่าน)
+    // 2. เช็ครหัสผ่าน และ บันทึกข้อมูล (POST)
     if (req.method === 'POST') {
         const { token, action, payload } = req.body;
 
-        // เช็ครหัสผ่าน
-        if (token !== ADMIN_PASS) return res.status(401).json({ error: "Wrong Password" });
+        // เช็ครหัสผ่าน (หัวใจสำคัญ!)
+        if (token !== ADMIN_PASS) {
+            return res.status(401).json({ error: "รหัสผ่านผิด! กรุณาลองใหม่" });
+        }
 
-        // ถ้าแค่มาล็อกอิน เช็คว่ารหัสถูก ให้ผ่านเลย
         if (action === "login") return res.status(200).json({ success: true });
 
-        // ถ้ามารักทึกข้อมูล (เซฟรูป เซฟงาน)
         if (payload) {
             try {
                 await fetch(`${KV_URL}/set/remie_os_data`, {
