@@ -208,7 +208,7 @@ document.querySelector('.close-viewer').addEventListener('click', (e) => {
 // ==========================================
 const schedules = [
     // { date: "10 MAY", title: "KOKORO 11", location: "MCC Hall, The Mall Bangkapi", mapUrl: "https://maps.google.com/?q=MCC+Hall+The+Mall+Bangkapi", booth: "i41-46", stage: "✅ (รอแจ้งเวลา)", isSpecial: false },
-    { date: "06 JUNE", title: "COSPLAY PLUS", location: "Mr.Fox Lifehouse", mapUrl: "https://maps.google.com/?q=Mr.Fox+Lifehouse", note: "❗❗ Order Drinks Only ❗❗", booth: "รอแจ้งอีกครั้ง", stage: "รอแจ้งอีกครั้ง", isSpecial: false },
+   // { date: "06 JUNE", title: "COSPLAY PLUS", location: "Mr.Fox Lifehouse", mapUrl: "https://maps.google.com/?q=Mr.Fox+Lifehouse", note: "❗❗ Order Drinks Only ❗❗", booth: "รอแจ้งอีกครั้ง", stage: "รอแจ้งอีกครั้ง", isSpecial: false },
     { date: "12 JUNE", title: "🎂 HAPPY BIRTHDAY TO ME", isSpecial: true },
     { date: "20 JUNE", title: "LILITH COSPLAY", location: "MCC Hall The Mall Bangkapi", mapUrl: "https://maps.google.com/?q=MCC+Hall+The+Mall+Bangkapi", booth: "✅ (รอแจ้งเลขบูธ)", stage: "✅ (รอแจ้งเวลา)", isSpecial: false },
     { date: "28 JUNE", title: "Verso Event", location: "MCC Hall, The Mall Bangkae", mapUrl: "https://maps.google.com/?q=MCC+Hall+The+Mall+Bangkae", booth: "รอแจ้งอีกครั้ง", stage: "รอแจ้งอีกครั้ง", isSpecial: false }
