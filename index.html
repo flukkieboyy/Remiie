@@ -825,7 +825,10 @@ function startFbListeners() {
 
             const ownWrite = (Date.now() - _lastFbWrite) < 2500;
             localStorage.setItem('remie_' + key, str);
-            if (!ownWrite) showUpdateBanner();                  // คนอื่นเปลี่ยน
+            if (!ownWrite) {
+                showUpdateBanner();                             // คนอื่นเปลี่ยน
+                if (typeof window.renderAll === 'function') window.renderAll();
+            }
         });
     });
 }
@@ -840,11 +843,17 @@ Promise.all(
 ).then(() => {
     startFbListeners();
     // re-render หลังดึงข้อมูลครั้งแรก
-    if (typeof renderProfile === 'function') {
-        renderProfile(); renderSchedule(); renderShop();
-        applyTheme(); applyTitle();
-    }
+    if (typeof window.renderAll === 'function') window.renderAll();
 }).catch(() => setSyncDot('offline'));
+
+// ── renderAll: เรียก render ทุกส่วนพร้อมกัน (ใช้ทั้งตอน initial pull และตอนคนอื่นแก้ข้อมูล realtime) ──
+window.renderAll = function() {
+    if (typeof renderProfile === 'function') renderProfile();
+    if (typeof renderSchedule === 'function') renderSchedule();
+    if (typeof renderShop === 'function') renderShop();
+    if (typeof applyTheme === 'function') applyTheme();
+    if (typeof applyTitle === 'function') applyTitle();
+};
 </script>
 <script>
 // ══════════════════════════════════════════════════════════════
